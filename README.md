@@ -3,9 +3,10 @@
 조회 성능 측정에 사용한 데이터베이스에는 50만 개의 더미 데이터가 들어있습니다.
 
 ## 프로젝트 설명
-1. `docker-compose.local.yml`: 로컬 캐시 저장소를 사용한 프로젝트 환경
-2. `docker-compose.redis.yml`: 레디스 캐시 저장소를 사용한 프로젝트 환경
-3. `docker-compose.shard.yml`: 레디스 캐시 저장소와 샤딩 데이터베이스를 사용한 프로젝트 환경   
+1. `docker-compose.yml`: 대조군을 위한 프로젝트 환경
+2. `docker-compose.local.yml`: 로컬 캐시 저장소를 사용한 프로젝트 환경
+3. `docker-compose.redis.yml`: 레디스 캐시 저장소를 사용한 프로젝트 환경
+4. `docker-compose.shard.yml`: 레디스 캐시 저장소와 샤딩 데이터베이스를 사용한 프로젝트 환경   
 
 ## 데이터베이스 준비
 ```mysql
