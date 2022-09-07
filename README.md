@@ -11,8 +11,7 @@
 ```mysql
 create table test
 (
-    id      int auto_increment
-        primary key,
+    id int auto_increment primary key,
     user_id varchar(50) null
 );
 
