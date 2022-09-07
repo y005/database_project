@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    username: root
+    password: samho101
+    url: jdbc:mysql://mysql1:3306/database
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml

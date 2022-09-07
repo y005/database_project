@@ -1,0 +1,43 @@
+version: "3.7"
+services:
+  spring1:
+    image: openjdk:11
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: >
+      bash -c "./gradlew bootRun --args='--spring.profiles.active=cache --spring.profiles.active=redis'"
+    restart: on-failure
+    container_name: spring1
+    depends_on:
+      - redis1
+      - mysql1
+
+  mysql1:
+    platform: linux/x86_64
+    image: mysql:5.7
+    restart: on-failure
+    container_name: mysql1
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=project01
+      - MYSQL_ROOT_PASSWORD=samho101
+      - TZ=Asia/Seoul
+    command:
+      - --lower_case_table_names=1
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - /Users/miridih/miridih/database/mysql:/var/lib/mysql
+
+  redis1:
+    image: redis
+    restart: on-failure
+    container_name: redis1
+    ports:
+      - "6379:6379"
+    volumes:
+      - /Users/miridih/miridih/database/redis:/var/lib/redis

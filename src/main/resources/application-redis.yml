@@ -1,0 +1,8 @@
+spring:
+  cache:
+    redis:
+      time-to-live: 300000
+
+  redis:
+    host: redis1
+    port: 6379
