@@ -35,7 +35,54 @@ CALL insertRandomData;
 $$
 ```
 
-## 실행 방법
+## 기본 환경의 조회 API
+### 실행방법
+```bash
+docker-compose -f ./docker-compose.yml up --build -d
 ```
-docker-compose -f ./docker-compose.default.yml up --build -d
+### 응답
+```json
+{
+  "status": "OK",
+  "data": {
+    "id": 202,
+    "user_id": "05d41869"
+  },
+  "time": 2
+}
+```
+
+
+## 로컬 캐시 사용 환경의 조회 API
+### 실행방법
+```bash
+docker-compose -f ./docker-compose.local.yml up --build -d
+```
+### 응답
+```json
+{
+  "status": "OK",
+  "data": {
+    "id": 202,
+    "user_id": "05d41869"
+  },
+  "time": 2
+}
+```
+
+## 레디스 캐시 사용 환경의 조회 API
+### 실행방법
+```bash
+docker-compose -f ./docker-compose.redis.yml up --build -d
+```
+### 응답
+```json
+{
+  "status": "OK",
+  "data": {
+    "id": 202,
+    "user_id": "05d41869"
+  },
+  "time": 2
+}
 ```
