@@ -118,4 +118,4 @@ docker-compose -f ./docker-compose.redis.yml up --build -d
 }
 ```
 
-## 샤딩 데이터베이스 준비에 필요한 
+## 샤딩 데이터베이스 준비에 필요한 설정
