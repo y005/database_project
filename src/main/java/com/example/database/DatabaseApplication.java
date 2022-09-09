@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan(basePackages = "com.example.database")
+@MapperScan(value="com.example.database.repository")
 public class DatabaseApplication {
 
     public static void main(String[] args) {

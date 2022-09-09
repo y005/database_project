@@ -3,6 +3,7 @@ package com.example.database.controller;
 import com.example.database.domain.Data;
 import com.example.database.dto.Response;
 import com.example.database.service.DefaultService;
+import com.example.database.service.TestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class TestController {
-    private final DefaultService testService;
+    private final TestService testService;
 
     @GetMapping
     public Response get(@RequestParam String id) {

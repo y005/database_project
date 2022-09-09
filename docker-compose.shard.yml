@@ -1,0 +1,98 @@
+version: "3.7"
+services:
+  spring1:
+    image: openjdk:11
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: >
+      bash -c "./gradlew bootRun --args='--spring.profiles.active=\"cache,redis,shard\"'"
+    restart: on-failure
+    container_name: spring1
+    depends_on:
+      - spider_db
+      - master_db1
+      - master_db2
+      - slave_db1
+      - slave_db2
+      - redis1
+
+  redis1:
+    image: redis
+    restart: on-failure
+    container_name: redis1
+    ports:
+      - "6379:6379"
+    volumes:
+      - /Users/miridih/miridih/database/redis:/var/lib/redis
+
+#  172.19.0.2
+  spider_db:
+    platform: ubuntu:latest
+    image: mariadb:10.1
+    restart: always
+    container_name: spider_db
+    ports:
+      - "3305:3306"
+    environment:
+      - MYSQL_DATABASE=database
+      - MYSQL_ROOT_PASSWORD=samho101
+      - TZ=Asia/Seoul
+#172.19.0.3
+  master_db1:
+    platform: ubuntu:latest
+    image: mariadb:10.1
+    restart: always
+    container_name: master_db1
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_DATABASE=database
+      - MYSQL_ROOT_PASSWORD=samho101
+      - TZ=Asia/Seoul
+    volumes:
+      - /Users/miridih/miridih/database/master_db1/:/etc/mysql/conf.d
+#172.19.0.5
+  master_db2:
+    platform: ubuntu:latest
+    image: mariadb:10.1
+    restart: always
+    container_name: master_db2
+    ports:
+      - "3308:3306"
+    environment:
+      - MYSQL_DATABASE=database
+      - MYSQL_ROOT_PASSWORD=samho101
+      - TZ=Asia/Seoul
+    volumes:
+      - /Users/miridih/miridih/database/master_db2/:/etc/mysql/conf.d
+#172.19.0.4
+  slave_db1:
+    platform: ubuntu:latest
+    image: mariadb:10.1
+    restart: always
+    container_name: slave_db1
+    ports:
+      - "3309:3306"
+    environment:
+      - MYSQL_DATABASE=database
+      - MYSQL_ROOT_PASSWORD=samho101
+      - TZ=Asia/Seoul
+    volumes:
+      - /Users/miridih/miridih/database/slave_db1/:/etc/mysql/conf.d
+#172.19.0.6
+  slave_db2:
+    platform: ubuntu:latest
+    image: mariadb:10.1
+    restart: always
+    container_name: slave_db2
+    ports:
+      - "3310:3306"
+    environment:
+      - MYSQL_DATABASE=database
+      - MYSQL_ROOT_PASSWORD=samho101
+      - TZ=Asia/Seoul
+    volumes:
+      - /Users/miridih/miridih/database/slave_db2/:/etc/mysql/conf.d
