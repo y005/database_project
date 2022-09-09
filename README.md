@@ -45,6 +45,7 @@ $$
 docker-compose -f ./docker-compose.yml up --build -d
 ```
 ### 응답
+### 일반 데이터베이스가 사용된 응답
 ```json
 {
   "status": "OK",
@@ -56,7 +57,18 @@ docker-compose -f ./docker-compose.yml up --build -d
   "now": "2022-09-09T03:06:07.010807"
 }
 ```
-
+### 레플 + 샤딩 데이터베이스가 사용된 응답
+```json
+{
+   "status": "OK",
+   "data": {
+      "id": 500005,
+      "user_id": "2daa2778"
+   },
+   "time": 11,
+   "now": "2022-09-09T11:37:02.08804"
+}
+```
 
 ## 로컬 캐시 사용 환경의 조회 API
 ### 실행방법
@@ -196,9 +208,33 @@ docker-compose -f ./docker-compose.redis.yml up --build -d
    start slave;
    ```
    
-## 레디스 캐시 사용 환경의 조회 API
+## 레플 + 샤딩 데이터베이스와 캐싱 사용 환경의 조회 API
 ### 실행방법
 ```bash
 docker-compose -f ./docker-compose.shard.yml up --build -d
 ```
 ### 응답
+### 캐시가 사용되지 않은 응답
+```json
+{
+   "status": "OK",
+   "data": {
+      "id": 500005,
+      "user_id": "2daa2778"
+   },
+   "time": 228,
+   "now": "2022-09-09T11:27:54.547548"
+}
+```
+### 캐시가 사용된 응답
+```json
+{
+   "status": "OK",
+   "data": {
+      "id": 500005,
+      "user_id": "2daa2778"
+   },
+   "time": 5,
+   "now": "2022-09-09T11:30:57.085486"
+}
+```
