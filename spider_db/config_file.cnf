@@ -1,4 +1,2 @@
 [mysqld]
-log-bin=mysql-bin
-server-id=1
 skip-name-resolve=off

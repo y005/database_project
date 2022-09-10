@@ -8,7 +8,7 @@ services:
       - .:/app
     working_dir: /app
     command: >
-      bash -c "./gradlew bootRun --args='--spring.profiles.active=\"cache,redis,shard\"'"
+      bash -c "./gradlew bootRun --args='--spring.profiles.active=\"cache,local,shard\"'"
     restart: on-failure
     container_name: spring1
     depends_on:
@@ -28,7 +28,6 @@ services:
     volumes:
       - /Users/miridih/miridih/database/redis:/var/lib/redis
 
-#  172.19.0.2
   spider_db:
     platform: ubuntu:latest
     image: mariadb:10.1
@@ -36,11 +35,16 @@ services:
     container_name: spider_db
     ports:
       - "3305:3306"
+    networks:
+      default_bridge:
+        ipv4_address: 172.19.0.2
     environment:
       - MYSQL_DATABASE=database
       - MYSQL_ROOT_PASSWORD=samho101
       - TZ=Asia/Seoul
-#172.19.0.3
+    volumes:
+      - /Users/miridih/miridih/database/spider_db/::/etc/mysql/conf.d
+
   master_db1:
     platform: ubuntu:latest
     image: mariadb:10.1
@@ -48,13 +52,16 @@ services:
     container_name: master_db1
     ports:
       - "3307:3306"
+    networks:
+      default_bridge:
+        ipv4_address: 172.19.0.3
     environment:
       - MYSQL_DATABASE=database
       - MYSQL_ROOT_PASSWORD=samho101
       - TZ=Asia/Seoul
     volumes:
       - /Users/miridih/miridih/database/master_db1/:/etc/mysql/conf.d
-#172.19.0.5
+
   master_db2:
     platform: ubuntu:latest
     image: mariadb:10.1
@@ -62,13 +69,16 @@ services:
     container_name: master_db2
     ports:
       - "3308:3306"
+    networks:
+      default_bridge:
+        ipv4_address: 172.19.0.4
     environment:
       - MYSQL_DATABASE=database
       - MYSQL_ROOT_PASSWORD=samho101
       - TZ=Asia/Seoul
     volumes:
       - /Users/miridih/miridih/database/master_db2/:/etc/mysql/conf.d
-#172.19.0.4
+
   slave_db1:
     platform: ubuntu:latest
     image: mariadb:10.1
@@ -76,13 +86,16 @@ services:
     container_name: slave_db1
     ports:
       - "3309:3306"
+    networks:
+      default_bridge:
+        ipv4_address: 172.19.0.5
     environment:
       - MYSQL_DATABASE=database
       - MYSQL_ROOT_PASSWORD=samho101
       - TZ=Asia/Seoul
     volumes:
       - /Users/miridih/miridih/database/slave_db1/:/etc/mysql/conf.d
-#172.19.0.6
+
   slave_db2:
     platform: ubuntu:latest
     image: mariadb:10.1
@@ -90,9 +103,19 @@ services:
     container_name: slave_db2
     ports:
       - "3310:3306"
+    networks:
+      default_bridge:
+        ipv4_address: 172.19.0.6
     environment:
       - MYSQL_DATABASE=database
       - MYSQL_ROOT_PASSWORD=samho101
       - TZ=Asia/Seoul
     volumes:
       - /Users/miridih/miridih/database/slave_db2/:/etc/mysql/conf.d
+
+networks:
+  default_bridge:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.0.0/16
