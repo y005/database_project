@@ -176,7 +176,18 @@ docker-compose -f ./docker-compose.redis.yml up --build -d
     partition sample2 comment = 'srv "master_db2"' 
    );
    ```
-5. 샤딩을 적용할 2개의 마스터 테이블의 접속 계정과 테이블을 만든다.
+5. 레플리카를 적용할 2개의 슬레이브 테이블을 시작한다.
+   ```sql
+   CHANGE MASTER TO
+   MASTER_HOST='172.19.0.3',
+   MASTER_USER='samho101', <- 레플리카 계정
+   MASTER_PASSWORD='1234',
+   MASTER_LOG_FILE='mysql-bin.000006', <- 마스터 db status
+   MASTER_LOG_POS=2506;
+   
+   start slave;
+   ```   
+6. 샤딩을 적용할 2개의 마스터 테이블의 접속 계정과 테이블을 만든다.
    ```sql
    CREATE USER 'samho101'@'%' IDENTIFIED BY '1234';
    GRANT REPLICATION SLAVE ON *.* TO 'samho101'@'%';
@@ -196,17 +207,7 @@ docker-compose -f ./docker-compose.redis.yml up --build -d
     user_id varchar(50) null
    ) engine=innodb;
    ```
-6. 레플리카를 적용할 2개의 슬레이브 테이블을 시작한다.
-   ```sql
-   CHANGE MASTER TO
-   MASTER_HOST='172.19.0.3',
-   MASTER_USER='samho101', <- 레플리카 계정
-   MASTER_PASSWORD='1234',
-   MASTER_LOG_FILE='mysql-bin.000006', <- 마스터 db status
-   MASTER_LOG_POS=2506;
-   
-   start slave;
-   ```
+
    
 ## 레플 + 샤딩 데이터베이스와 캐싱 사용 환경의 조회 API
 ### 실행방법
