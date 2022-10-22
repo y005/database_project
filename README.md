@@ -138,8 +138,8 @@ docker-compose -f ./docker-compose.yml up --build -d
 {
    "status": "OK",
    "data": {
-      "id": 500005,
-      "user_id": "2daa2778"
+      "id": 500000,
+      "user_id": "0a916d8b"
    },
    "time": 11,
    "now": "2022-09-09T11:37:02.08804"
