@@ -252,12 +252,6 @@ docker-compose -f ./docker-compose.redis.yml up --build -d
 }
 ```
 ---
-[sharding1](https://aws.amazon.com/ko/what-is/database-sharding/)
-
-[sharding2](https://minkwon4.tistory.com/317)
-
-[replica1]()
-
-[replica2](https://kimdubi.github.io/cloud/docker_mysql_repl/)
+[Docker-compose로 Mysql Replication 자동 구성하기](https://kimdubi.github.io/cloud/docker_mysql_repl/)
 
 [Run the containers in default bridge network](https://faun.pub/run-the-containers-in-default-bridge-network-with-docker-compose-yml-f8e57590722)
