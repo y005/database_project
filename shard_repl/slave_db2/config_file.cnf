@@ -1,0 +1,4 @@
+[mysqld]
+server-id=4
+read-only=1
+skip-name-resolve=off

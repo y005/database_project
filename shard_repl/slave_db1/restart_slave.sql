@@ -1,0 +1,2 @@
+stop slave;
+start slave;

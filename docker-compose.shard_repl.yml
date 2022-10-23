@@ -30,6 +30,9 @@ services:
     container_name: spider_db
     ports:
       - "3305:3306"
+    networks:
+      default_bridge:
+        ipv4_address: 192.168.0.2
     environment:
       - MYSQL_DATABASE=database
       - MYSQL_ROOT_PASSWORD=samho101

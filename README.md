@@ -11,6 +11,7 @@
 2. `docker-compose.local.yml`: 로컬 캐시 저장소를 사용한 프로젝트 환경
 3. `docker-compose.redis.yml`: 레디스 캐시 저장소를 사용한 프로젝트 환경
 4. `docker-compose.shard_repl.yml`: 레디스 캐시 저장소와 레플+샤딩 데이터베이스를 사용한 프로젝트 환경   
+5. `/shard_repl`: 4의 필요한 데이터베이스 설정 폴더
 
 ## 기본 데이터베이스 준비에 필요한 설정
 ```mysql
@@ -213,6 +214,18 @@ docker-compose -f ./docker-compose.redis.yml up --build -d
    - redis1 (캐시 컨테이너)
    - spring1 (스프링 컨테이너)
 2. spider_db에 접속해 테이블을 생성한다.
+   ```sql
+   create table test(
+       id  int auto_increment primary key,
+       user_id varchar(50) null
+   )
+   engine=spider
+   comment='wrapper "mysql", table "test"'
+   partition by key(id) (
+    partition sample1 comment = 'srv "master_db1"', 
+    partition sample2 comment = 'srv "master_db2"' 
+   );
+   ```
 ### 응답
 ### 캐시가 사용되지 않은 응답
 ```json
