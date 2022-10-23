@@ -1,0 +1,145 @@
+version: "3.7"
+services:
+  spring1:
+    image: openjdk:11
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: >
+      bash -c "./gradlew bootRun --args='--spring.profiles.active=\"cache,local,shard\"'"
+    restart: on-failure
+    container_name: spring1
+    depends_on:
+      - redis1
+
+  redis1:
+    image: redis
+    restart: on-failure
+    container_name: redis1
+    ports:
+      - "6379:6379"
+    volumes:
+      - /Users/miridih/miridih/database/redis:/var/lib/redis
+
+  spider_db:
+    platform: ubuntu:latest
+    image: mariadb:10.1
+    restart: on-failure
+    container_name: spider_db
+    ports:
+      - "3305:3306"
+    environment:
+      - MYSQL_DATABASE=database
+      - MYSQL_ROOT_PASSWORD=samho101
+      - TZ=Asia/Seoul
+    command:
+      - --lower_case_table_names=1
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --bind-address=0.0.0.0
+    volumes:
+      - /Users/miridih/miridih/database/shard_repl/spider_db/docker-entrypoint.sh:/docker-entrypoint.sh
+      - /Users/miridih/miridih/database/shard_repl/spider_db/:/etc/mysql/conf.d
+
+  master_db1:
+    platform: ubuntu:latest
+    image: mariadb:10.1
+    restart: on-failure
+    container_name: master_db1
+    ports:
+      - "3307:3306"
+    networks:
+      default_bridge:
+        ipv4_address: 192.168.0.3
+    environment:
+      - MYSQL_DATABASE=database
+      - MYSQL_ROOT_PASSWORD=samho101
+      - TZ=Asia/Seoul
+    command:
+      - --lower_case_table_names=1
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --bind-address=0.0.0.0
+    volumes:
+      - /Users/miridih/miridih/database/shard_repl/master_db1/docker-entrypoint.sh:/docker-entrypoint.sh
+      - /Users/miridih/miridih/database/shard_repl/master_db1/:/etc/mysql/conf.d
+
+  master_db2:
+    platform: ubuntu:latest
+    image: mariadb:10.1
+    restart: on-failure
+    container_name: master_db2
+    ports:
+      - "3308:3306"
+    networks:
+      default_bridge:
+        ipv4_address: 192.168.0.4
+    environment:
+      - MYSQL_DATABASE=database
+      - MYSQL_ROOT_PASSWORD=samho101
+      - TZ=Asia/Seoul
+    command:
+      - --lower_case_table_names=1
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --bind-address=0.0.0.0
+    volumes:
+      - /Users/miridih/miridih/database/shard_repl/master_db2/docker-entrypoint.sh:/docker-entrypoint.sh
+      - /Users/miridih/miridih/database/shard_repl/master_db2/:/etc/mysql/conf.d
+
+  slave_db1:
+    platform: ubuntu:latest
+    image: mariadb:10.1
+    restart: on-failure
+    container_name: slave_db1
+    ports:
+      - "3309:3306"
+    networks:
+      default_bridge:
+        ipv4_address: 192.168.0.5
+    environment:
+      - MYSQL_DATABASE=database
+      - MYSQL_ROOT_PASSWORD=samho101
+      - TZ=Asia/Seoul
+    command:
+      - --lower_case_table_names=1
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --bind-address=0.0.0.0
+    volumes:
+      - /Users/miridih/miridih/database/shard_repl/slave_db1/docker-entrypoint.sh:/docker-entrypoint.sh
+      - /Users/miridih/miridih/database/shard_repl/slave_db1/restart_slave.sql:/docker-entrypoint-initdb.d/restart_slave.sql
+      - /Users/miridih/miridih/database/shard_repl/slave_db1/:/etc/mysql/conf.d
+
+  slave_db2:
+    platform: ubuntu:latest
+    image: mariadb:10.1
+    restart: on-failure
+    container_name: slave_db2
+    ports:
+      - "3310:3306"
+    networks:
+      default_bridge:
+        ipv4_address: 192.168.0.6
+    environment:
+      - MYSQL_DATABASE=database
+      - MYSQL_ROOT_PASSWORD=samho101
+      - TZ=Asia/Seoul
+    command:
+      - --lower_case_table_names=1
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --bind-address=0.0.0.0
+    volumes:
+      - /Users/miridih/miridih/database/shard_repl/slave_db2/docker-entrypoint.sh:/docker-entrypoint.sh
+      - /Users/miridih/miridih/database/shard_repl/slave_db2/restart_slave.sql:/docker-entrypoint-initdb.d/restart_slave.sql
+      - /Users/miridih/miridih/database/shard_repl/slave_db2/:/etc/mysql/conf.d
+
+networks:
+  default_bridge:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.0.0/16

@@ -1,5 +1,5 @@
 spring:
   datasource:
-    username: samho101
-    password: 1234
-    url: jdbc:mysql://spider_db:3306/database
+    username: root
+    password: samho101
+    url: jdbc:mariadb://spider_db:3306/database

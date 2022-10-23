@@ -37,3 +37,4 @@ out/
 .vscode/
 
 mysql/
+shard_repl/
